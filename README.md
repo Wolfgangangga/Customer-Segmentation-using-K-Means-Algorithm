@@ -137,6 +137,51 @@ main_df = pd.merge(main_df, df_sellers)
 # Check Overview of merged dataset
 main_df.info()
 ```
-Here is a simple footnote[^1].
-
-A footnote can also have multiple lines[^2].  
+```
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 11578 entries, 0 to 11577
+Data columns (total 40 columns):
+ #   Column                         Non-Null Count  Dtype  
+---  ------                         --------------  -----  
+ 0   customer_id                    11578 non-null  object 
+ 1   customer_unique_id             11578 non-null  object 
+ 2   customer_zip_code_prefix       11578 non-null  int64  
+ 3   customer_city                  11578 non-null  object 
+ 4   customer_state                 11578 non-null  object 
+ 5   order_id                       11578 non-null  object 
+ 6   order_status                   11578 non-null  object 
+ 7   order_purchase_timestamp       11578 non-null  object 
+ 8   order_approved_at              11578 non-null  object 
+ 9   order_delivered_carrier_date   11578 non-null  object 
+ 10  order_delivered_customer_date  11578 non-null  object 
+ 11  order_estimated_delivery_date  11578 non-null  object 
+ 12  order_item_id                  11578 non-null  int64  
+ 13  product_id                     11578 non-null  object 
+ 14  seller_id                      11578 non-null  object 
+ 15  shipping_limit_date            11578 non-null  object 
+ 16  price                          11578 non-null  float64
+ 17  freight_value                  11578 non-null  float64
+ 18  product_category_name          11578 non-null  object 
+ 19  product_name_lenght            11578 non-null  float64
+ 20  product_description_lenght     11578 non-null  float64
+ 21  product_photos_qty             11578 non-null  float64
+ 22  product_weight_g               11578 non-null  float64
+ 23  product_length_cm              11578 non-null  float64
+ 24  product_height_cm              11578 non-null  float64
+ 25  product_width_cm               11578 non-null  float64
+ 26  product_category_name_english  11578 non-null  object 
+ 27  payment_sequential             11578 non-null  int64  
+ 28  payment_type                   11578 non-null  object 
+ 29  payment_installments           11578 non-null  int64  
+ 30  payment_value                  11578 non-null  float64
+ 31  review_id                      11578 non-null  object 
+ 32  review_score                   11578 non-null  int64  
+ 33  review_comment_title           11578 non-null  object 
+ 34  review_comment_message         11578 non-null  object 
+ 35  review_creation_date           11578 non-null  object 
+ 36  review_answer_timestamp        11578 non-null  object 
+ 37  seller_zip_code_prefix         11578 non-null  int64  
+ 38  seller_city                    11578 non-null  object 
+ 39  seller_state                   11578 non-null  object 
+dtypes: float64(10), int64(6), object(24) 
+```
