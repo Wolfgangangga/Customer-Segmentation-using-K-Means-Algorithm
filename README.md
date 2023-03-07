@@ -3,23 +3,16 @@ This project is about customer segmentation using K-Means Algorithm. Segmentatio
 
 ```python
 # Import Packages
-s = "Python syntax highlighting"
-print s
-```
-
-
-### Import Packages
-'''python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
 from sklearn import preprocessing
-'''
+```
 
 ### Data Preprocessing
-'''
+```python
 # Import Dataset
 # Customers dataset
 url = 'https://drive.google.com/file/d/18Xz9KswZaMuE0sr90PDU62huvM9n6Jdd/view?usp=sharing'
@@ -74,8 +67,8 @@ url = 'https://drive.google.com/file/d/1SvjWZwLkMYpmbnqMFADAosaosjyxZP52/view?us
 file_id = url.split("/")[-2]
 read_url = "https://drive.google.com/uc?id=" + file_id
 df_sellers = pd.read_csv(read_url)
-'''
-'''
+```
+```python
 # Check total missing values in each datasets
 df_names = ['df_cust', 'df_geo', 'df_order_items', 'df_order_payments', 'df_order_reviews', 'df_orders', 'df_prod_names', 'df_prod', 'df_sellers']
 df_list = [df_cust, df_geo, df_order_items, df_order_payments, df_order_reviews, df_orders, df_prod_names, df_prod, df_sellers]
@@ -86,7 +79,7 @@ for i in range(9):
     num_na.append(na)
 
 pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing Value'])
-'''
+```
 | Dataset           | Total Missing Value   |
 | ------------------|----------------------:|
 | df_cust           |                      0|
