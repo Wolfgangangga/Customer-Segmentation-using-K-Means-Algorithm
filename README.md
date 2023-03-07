@@ -453,6 +453,7 @@ Order Recency_scaled = (Order Recency - 2)/(484 - 2)
 
 
 - Calculate distance measure for clustering
+
 distance = sqrt((Total Payment_scaled - Total Payment_centroid cluster i)^2 + (Order Frequency_scaled - Order Frequency_centroid cluster i)^2 + (Order Recency_scaled - Order Recency_centroid cluster i)^2)
 
 for i : cluster 1, cluster 2, cluster 3
