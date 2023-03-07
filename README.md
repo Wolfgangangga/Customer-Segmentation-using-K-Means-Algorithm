@@ -438,23 +438,15 @@ pd.DataFrame(cust_seg_model.cluster_centers_, columns = ['Total Payment', 'Order
 | Cluster 3	| 0.006097	    | 0.010669	      | 0.076494      |
 
 From the table above, customers can be segmented as follows:
-- Cluster 1 as Loyal Customers
-Customers from this cluster have large transaction payments and make pruchases more often.
-- Cluster 2 as At Risk Customers
-Customers from this cluster have small transaction payments and have not purchases for a long time.
-- Cluster 3 as Active Customers
-Customers from this cluster recently make purchases.
+- Cluster 1 as Loyal Customers  : Customers from this cluster have large transaction payments and make pruchases more often.
+- Cluster 2 as At Risk Customers: Customers from this cluster have small transaction payments and have not purchases for a long time.
+- Cluster 3 as Active Customers : Customers from this cluster recently make purchases.
 
 #### Segmentation New Customer
 - Scaling customer's data using Min-Max Scaling method:
 
-Total Payment
 Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89)
-
-Order Frequency
 Order Frequency_scaled = (Order Frequency - 1)/(13 - 1)
-
-Order Recency
 Order Recency_scaled = (Order Recency - 2)/(484 - 2)
 
 
