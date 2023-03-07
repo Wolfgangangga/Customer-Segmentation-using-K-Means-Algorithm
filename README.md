@@ -299,3 +299,34 @@ None
 | ...                              | ...   | ...	       | ...             | ...           |		
 | fff3e1d7bc75f11dc7670619b2e61840 | PI	   | 82.51	       | 1	             | 42            |
 | ffff5962728ec6157033ef9805bacc48 | ES	   | 133.69	       | 1	             | 121           |
+
+For clustering analysis, a dataset is created using informations from the merged dataset. The dataset contains location, total payment, order frequency, and order recency for each customers. The number of customers are 9333. The dataset have no missing values.
+
+#### EDA of Clustering Dataset
+```python
+# Visualisation for each columns
+print(df_clustering.describe())
+
+fig, ax = plt.subplots(nrows = 1, ncols = 4, figsize=(20, 5))
+
+sns.countplot(x = df_clustering['State'], order=pd.value_counts(df_clustering['State']).iloc[:10].index, ax = ax[0])
+ax[1].boxplot(x = df_clustering['Total_Payment'], whis=1.5)
+ax[2].boxplot(x = df_clustering['Order_Frequency'], whis=1.5)
+ax[3].boxplot(x = df_clustering['Order_Recency'], whis=1.5)
+ax[1].set(title = 'Total Payment', xticklabels=[])
+ax[2].set(title = 'Order Frequency', xticklabels=[])
+ax[3].set(title = 'Order Recency', xticklabels=[])
+
+plt.show()
+```
+```
+       Total_Payment  Order_Frequency  Order_Recency
+count    9333.000000      9333.000000    9333.000000
+mean      245.638111         1.240544      75.423551
+std       641.607276         0.723361      42.535458
+min        13.890000         1.000000       2.000000
+25%        68.180000         1.000000      37.000000
+50%       122.420000         1.000000      75.000000
+75%       217.550000         1.000000     113.000000
+max     29099.520000        13.000000     484.000000
+```
