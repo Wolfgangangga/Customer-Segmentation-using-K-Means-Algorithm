@@ -140,7 +140,7 @@ main_df = pd.merge(main_df, df_sellers)
 main_df.info()
 ```
 ```
-**Output**
+OUTPUT:
 <class 'pandas.core.frame.DataFrame'>
 Int64Index: 11578 entries, 0 to 11577
 Data columns (total 40 columns):
@@ -200,6 +200,7 @@ main_df.info()
 ```
 
 ```
+OUTPUT:
 <class 'pandas.core.frame.DataFrame'>
 Int64Index: 11578 entries, 0 to 11577
 Data columns (total 40 columns):
@@ -256,6 +257,7 @@ last_purchase_date = main_df.order_purchase_timestamp.max()
 last_purchase_date
 ```
 ```
+OUTPUT:
 Timestamp('2018-08-29 14:18:28')
 ```
 
@@ -265,6 +267,7 @@ present_date = datetime(2018, 9, 1)
 present_date
 ```
 ```
+OUTPUT:
 datetime.datetime(2018, 9, 1, 0, 0)
 ```
 
@@ -280,6 +283,7 @@ print(df_clustering.info())
 df_clustering
 ```
 ```
+OUTPUT:
 <class 'pandas.core.frame.DataFrame'>
 Index: 9333 entries, 0000366f3b9a7992bf8c76cfdf3221e2 to ffff5962728ec6157033ef9805bacc48
 Data columns (total 4 columns):
@@ -323,6 +327,7 @@ ax[3].set(title = 'Order Recency', xticklabels=[])
 plt.show()
 ```
 ```
+OUTPUT:
        Total_Payment  Order_Frequency  Order_Recency
 count    9333.000000      9333.000000    9333.000000
 mean      245.638111         1.240544      75.423551
@@ -433,15 +438,15 @@ pd.DataFrame(cust_seg_model.cluster_centers_, columns = ['Total Payment', 'Order
 | Cluster 3	| 0.006097	    | 0.010669	      | 0.076494      |
 
 From the table above, customers can be segmented as follows:
-Cluster 1 as Loyal Customers
+- Cluster 1 as Loyal Customers
 Customers from this cluster have large transaction payments and make pruchases more often.
-Cluster 2 as At Risk Customers
+- Cluster 2 as At Risk Customers
 Customers from this cluster have small transaction payments and have not purchases for a long time.
-Cluster 3 as Active Customers
+- Cluster 3 as Active Customers
 Customers from this cluster recently make purchases.
 
 #### Segmentation New Customer
-Scaling customer's data using Min-Max Scaling method:
+- Scaling customer's data using Min-Max Scaling method:
 
 Total Payment
 Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89)
@@ -453,7 +458,7 @@ Order Recency
 Order Recency_scaled = (Order Recency - 2)/(484 - 2)
 
 
-Calculate distance measure for clustering
+- Calculate distance measure for clustering
 distance = sqrt((Total Payment_scaled - Total Payment_centroid cluster i)^2 + (Order Frequency_scaled - Order Frequency_centroid cluster i)^2 + (Order Recency_scaled - Order Recency_centroid cluster i)^2)
 
 for i : cluster 1, cluster 2, cluster 3
