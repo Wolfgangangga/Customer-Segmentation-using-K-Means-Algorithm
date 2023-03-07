@@ -330,3 +330,5 @@ min        13.890000         1.000000       2.000000
 75%       217.550000         1.000000     113.000000
 max     29099.520000        13.000000     484.000000
 ```
+
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
