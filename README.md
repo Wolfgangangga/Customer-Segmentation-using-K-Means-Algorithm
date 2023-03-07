@@ -94,3 +94,49 @@ pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing V
 | df_sellers        |                      0|
 
 Based on the table above, could be known that there are missing values on 'df_order_reviews', 'df_orders', and 'df_prod' datasets. To avoid the missing values effects on the analysis, each rows that contain missing value(s) will be removed from the datasets.
+
+```python
+# Drop rows that contains missing value(s) in each datasets
+for i in range(9):
+    df_list[i].dropna(inplace = True)
+    
+# Check datasets still contain missing values or not
+num_na = []
+for i in range(9):
+    na = df_list[i].isnull().sum().sum()
+    num_na.append(na)
+
+pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing Value'])
+```
+| Dataset           | Total Missing Value   |
+| ------------------|----------------------:|
+| df_cust           |                      0|
+| df_geo            |                      0|
+| df_order_items    |                      0|
+| df_order_payments |                      0|
+| df_order_reviews  |                      0|
+| df_orders         |                      0|
+| df_prod_names     |                      0|
+| df_prod           |                      0|
+| df_sellers        |                      0|
+
+Based on the table above, we know that there aren't missing values anymore in each datasets.
+
+```python
+# Combine datasets into a dataframe
+main_df = pd.merge(df_cust, df_orders)
+main_df = pd.merge(main_df, df_order_items)
+main_df = pd.merge(main_df, df_prod)
+main_df = pd.merge(main_df, df_prod_names)
+main_df = pd.merge(main_df, df_order_payments)
+main_df = pd.merge(main_df, df_order_reviews)
+main_df = pd.merge(main_df, df_sellers)
+```
+
+```python
+# Check Overview of merged dataset
+main_df.info()
+```
+Here is a simple footnote[^1].
+
+A footnote can also have multiple lines[^2].  
