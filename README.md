@@ -445,9 +445,9 @@ From the table above, customers can be segmented as follows:
 #### Segmentation New Customer
 - Scaling customer's data using Min-Max Scaling method:
 
-Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89)
+Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89) <enter>
 Order Frequency_scaled = (Order Frequency - 1)/(13 - 1)
-Order Recency_scaled = (Order Recency - 2)/(484 - 2) *same paragraph*.
+Order Recency_scaled = (Order Recency - 2)/(484 - 2)
 
 
 - Calculate distance measure for clustering
