@@ -332,3 +332,123 @@ max     29099.520000        13.000000     484.000000
 ```
 
 ![alt text](https://github.com/Wolfgangangga/Customer-Segmentation-using-K-Means-Algorithm/blob/main/EDA%201.png)
+
+From the visualisation analysis above, could be known that most of the customers live in SP, RJ and MG state. About 75% of the customers have total payment below 220 and order frequency of 1, they can be considered as new customer. About 25% of the customers have recently made a transaction in the last 37 days.
+
+```python
+# Visualisation between customer location and others variables
+fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20, 5))
+
+sns.boxplot(data = df_clustering, x = 'State', y = 'Total_Payment', order = pd.value_counts(df_clustering['State']).iloc[:10].index, ax = ax[0], whis=1.5)
+sns.boxplot(data = df_clustering, x = 'State', y = 'Order_Frequency', order = pd.value_counts(df_clustering['State']).iloc[:10].index, ax = ax[1], whis=1.5)
+sns.boxplot(data = df_clustering, x = 'State', y = 'Order_Recency', order = pd.value_counts(df_clustering['State']).iloc[:10].index, ax = ax[2], whis=1.5)
+
+plt.show()
+```
+
+![alt text](https://github.com/Wolfgangangga/Customer-Segmentation-using-K-Means-Algorithm/blob/main/EDA%202.png)
+
+In this visualisation, the visualisations only use top 10 state that have the most customers assuming its can represent other states. From the plots above, could be known that total payment, order frequency and order recency have the same pattern in all of the states. Therefore, 'State' variable is not informative to be used on customer segmentation.
+
+#### Clustering using K-Means Algorithm
+Before do clustering using K-Means algorithm, each columns in the dataset should be scaled to create same scale data. The scaling process is needed because K-Means algorithm use distance-based dissimilarity measure. Besides, the scaling process can solve outliers problem.
+
+```python
+# Scaling dataset
+df = df_clustering.drop(['State'], axis = 1)
+scaler = preprocessing.MinMaxScaler()
+df = pd.DataFrame(scaler.fit_transform(df), columns = ['Total_Payment', 'Order_Frequency', 'Order_Recency'])
+df
+```
+
+| Total_Payment | Order_Frequency |	Order_Recency |
+| -------------:| ---------------:| -------------:|
+| 0.004401   	| 0.000000   	  | 0.230290      |
+| 0.000477   	| 0.000000  	  | 0.016598      |
+| 0.003719  	| 0.000000  	  | 0.066390      |
+| 0.010855  	| 0.083333  	  | 0.010373      |
+| ...	        | ...             |	...	          |
+| 0.002359  	| 0.000000  	  | 0.082988      |
+| 0.004119  	| 0.000000  	  | 0.246888      |
+
+```python
+# Find the best number of clusters
+fig, ax = plt.subplots(nrows = 1, ncols = 2, figsize = (20, 5))
+
+# Elbow Method
+from sklearn.cluster import KMeans
+sse = []
+for k in range(1, 11):
+    kmeans = KMeans(init = 'random', n_clusters = k, n_init = 10, max_iter = 300, random_state = 123)
+    kmeans.fit(df)
+    sse.append(kmeans.inertia_)
+    
+plt.style.use("fivethirtyeight")
+ax[0].plot(range(1, 11), sse)
+ax[0].xaxis.set(ticks = range(1, 11))
+ax[0].set_xlabel("Number of Clusters")
+ax[0].set_ylabel("SSE")
+
+# Silhouette Score
+from sklearn.metrics import silhouette_score
+silhouette_coefficients = []
+for k in range(2, 11):
+    kmeans = KMeans(init = 'random', n_clusters = k, n_init = 10, max_iter = 300, random_state = 123)
+    kmeans.fit(df)
+    score = silhouette_score(df, kmeans.labels_)
+    silhouette_coefficients.append(score)
+    
+plt.style.use("fivethirtyeight")
+ax[1].plot(range(2, 11), silhouette_coefficients)
+ax[1].set_xlabel("Number of Clusters")
+ax[1].set_ylabel("Silhouette Coefficient")
+
+plt.show()
+```
+
+![alt text](https://github.com/Wolfgangangga/Customer-Segmentation-using-K-Means-Algorithm/blob/main/Elbow%20and%20Silhouette.png)
+
+From the plots above, could be known that the best number of cluster is k = 3 because it is the smallest number of clusters that has small error and highest sillhoutte score.
+
+#### Customers Segemntation Model
+```python
+# Model
+cust_seg = KMeans(init = 'random', n_clusters = 3, n_init = 10, max_iter = 300, random_state = 123)
+cust_seg_model = cust_seg.fit(df)
+```
+
+```python
+# Cluster Centers
+cluster = ['Cluster 1', 'Cluster 2', 'Cluster 3']
+pd.DataFrame(cust_seg_model.cluster_centers_, columns = ['Total Payment', 'Order Frequency', 'Order Recency'], index = cluster)
+```
+
+|           | Total Payment | Order Frequency |	Order Recency |
+| --------- | -------------:| ---------------:| -------------:|
+| Cluster 1	| 0.051255  	| 0.257042  	  | 0.167150      |
+| Cluster 2	| 0.006419	    | 0.010679	      | 0.228657      |
+| Cluster 3	| 0.006097	    | 0.010669	      | 0.076494      |
+
+From the table above, customers can be segmented as follows:
+Cluster 1 as Loyal Customers
+Customers from this cluster have large transaction payments and make pruchases more often.
+Cluster 2 as At Risk Customers
+Customers from this cluster have small transaction payments and have not purchases for a long time.
+Cluster 3 as Active Customers
+Customers from this cluster recently make purchases.
+
+#### Segmentation New Customer
+Scaling customer's data using Min-Max Scaling method:
+Total Payment
+Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89)
+Order Frequency
+Order Frequency_scaled = (Order Frequency - 1)/(13 - 1)
+Order Recency
+Order Recency_scaled = (Order Recency - 2)/(484 - 2)
+
+Calculate distance measure for clustering:
+distance = sqrt((Total Payment_scaled - Total Payment_centroid cluster i)^2 + (Order Frequency_scaled - Order Frequency_centroid cluster i)^2 + (Order Recency_scaled - Order Recency_centroid cluster i)^2)
+for i : cluster 1, cluster 2, cluster 3
+
+The above formula is applied to each clusters.
+Then get distance of new customer to each clusters and find the smallest ones. The smallest distance is the cluster for the new customer.
