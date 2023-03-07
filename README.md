@@ -185,3 +185,118 @@ Data columns (total 40 columns):
  39  seller_state                   11578 non-null  object 
 dtypes: float64(10), int64(6), object(24) 
 ```
+
+Based on the information above, the merged dataset has dimension 11577 x 40. There aren't missing values on the merged dataset. However, the datetime-based columns are not in the correct data type.
+
+```python
+# Convert several columns into datetime type
+time_cols = ['order_purchase_timestamp', 'order_approved_at', 'order_delivered_carrier_date', 'order_delivered_customer_date',
+             'order_estimated_delivery_date', 'shipping_limit_date', 'review_creation_date', 'review_answer_timestamp']
+main_df[time_cols] = main_df[time_cols].apply(pd.to_datetime)
+main_df.info()
+```
+
+```
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 11578 entries, 0 to 11577
+Data columns (total 40 columns):
+ #   Column                         Non-Null Count  Dtype         
+---  ------                         --------------  -----         
+ 0   customer_id                    11578 non-null  object        
+ 1   customer_unique_id             11578 non-null  object        
+ 2   customer_zip_code_prefix       11578 non-null  int64         
+ 3   customer_city                  11578 non-null  object        
+ 4   customer_state                 11578 non-null  object        
+ 5   order_id                       11578 non-null  object        
+ 6   order_status                   11578 non-null  object        
+ 7   order_purchase_timestamp       11578 non-null  datetime64[ns]
+ 8   order_approved_at              11578 non-null  datetime64[ns]
+ 9   order_delivered_carrier_date   11578 non-null  datetime64[ns]
+ 10  order_delivered_customer_date  11578 non-null  datetime64[ns]
+ 11  order_estimated_delivery_date  11578 non-null  datetime64[ns]
+ 12  order_item_id                  11578 non-null  int64         
+ 13  product_id                     11578 non-null  object        
+ 14  seller_id                      11578 non-null  object        
+ 15  shipping_limit_date            11578 non-null  datetime64[ns]
+ 16  price                          11578 non-null  float64       
+ 17  freight_value                  11578 non-null  float64       
+ 18  product_category_name          11578 non-null  object        
+ 19  product_name_lenght            11578 non-null  float64       
+ 20  product_description_lenght     11578 non-null  float64       
+ 21  product_photos_qty             11578 non-null  float64       
+ 22  product_weight_g               11578 non-null  float64       
+ 23  product_length_cm              11578 non-null  float64       
+ 24  product_height_cm              11578 non-null  float64       
+ 25  product_width_cm               11578 non-null  float64       
+ 26  product_category_name_english  11578 non-null  object        
+ 27  payment_sequential             11578 non-null  int64         
+ 28  payment_type                   11578 non-null  object        
+ 29  payment_installments           11578 non-null  int64         
+ 30  payment_value                  11578 non-null  float64       
+ 31  review_id                      11578 non-null  object        
+ 32  review_score                   11578 non-null  int64         
+ 33  review_comment_title           11578 non-null  object        
+ 34  review_comment_message         11578 non-null  object        
+ 35  review_creation_date           11578 non-null  datetime64[ns]
+ 36  review_answer_timestamp        11578 non-null  datetime64[ns]
+ 37  seller_zip_code_prefix         11578 non-null  int64         
+ 38  seller_city                    11578 non-null  object        
+ 39  seller_state                   11578 non-null  object        
+dtypes: datetime64[ns](8), float64(10), int64(6), object(16)
+```
+
+### Clustering Analysis: Customers Segmentation
+#### Data Preprocessing for Clustering Analysis
+```python
+# Get the last purchase date were made by customers
+last_purchase_date = main_df.order_purchase_timestamp.max()
+last_purchase_date
+```
+```
+Timestamp('2018-08-29 14:18:28')
+```
+
+```python
+# Assume the present date is the first date of the next month of customers last purchase date
+present_date = datetime(2018, 9, 1)
+present_date
+```
+```
+datetime.datetime(2018, 9, 1, 0, 0)
+```
+
+```python
+# Prepare the dataset for customers segmentation
+df_clustering = main_df.groupby('customer_unique_id').agg({'customer_state': lambda x: x.max(),
+                                                           'payment_value': lambda x: x.sum(),
+                                                           'order_id': lambda x: len(x),
+                                                           'order_purchase_timestamp': lambda x: (present_date - x.max()).days})
+
+df_clustering.columns = ['State', 'Total_Payment', 'Order_Frequency', 'Order_Recency']
+print(df_clustering.info())
+df_clustering
+```
+```
+<class 'pandas.core.frame.DataFrame'>
+Index: 9333 entries, 0000366f3b9a7992bf8c76cfdf3221e2 to ffff5962728ec6157033ef9805bacc48
+Data columns (total 4 columns):
+ #   Column           Non-Null Count  Dtype  
+---  ------           --------------  -----  
+ 0   State            9333 non-null   object 
+ 1   Total_Payment    9333 non-null   float64
+ 2   Order_Frequency  9333 non-null   int64  
+ 3   Order_Recency    9333 non-null   int64  
+dtypes: float64(1), int64(2), object(1)
+memory usage: 364.6+ KB
+None
+```
+| customer_unique_id               | State | Total_Payment | Order_Frequency | Order_Recency | 
+| -------------------------------- |:-----:| -------------:| ---------------:| -----------------:| 
+| 0000366f3b9a7992bf8c76cfdf3221e2 | SP    | 141.90	       | 1	             | 113
+              |
+| 000ec5bff359e1c0ad76a81a45cb598f | SP	   | 27.75	       | 1	             | 10                 |
+| 00172711b30d52eea8b313a7f2cced02 | BA	   | 122.07	       | 1	             | 34                 |
+| 001928b561575b2821c92254a2327d06 | SP	   | 329.62	       | 2	             | 7                 |
+| ...                              | ...   | ...	       | ...             | ...               |		
+| fff3e1d7bc75f11dc7670619b2e61840 | PI	   | 82.51	       | 1	             | 42                 |
+| ffff5962728ec6157033ef9805bacc48 | ES	   | 133.69	       | 1	             | 121               |
