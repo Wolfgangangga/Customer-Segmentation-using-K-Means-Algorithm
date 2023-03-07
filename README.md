@@ -81,6 +81,7 @@ for i in range(9):
 
 pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing Value'])
 ```
+
 | Dataset           | Total Missing Value   |
 | ------------------|----------------------:|
 | df_cust           |                      0|
@@ -108,6 +109,7 @@ for i in range(9):
 
 pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing Value'])
 ```
+
 | Dataset           | Total Missing Value   |
 | ------------------|----------------------:|
 | df_cust           |                      0|
@@ -138,6 +140,7 @@ main_df = pd.merge(main_df, df_sellers)
 main_df.info()
 ```
 ```
+**Output**
 <class 'pandas.core.frame.DataFrame'>
 Int64Index: 11578 entries, 0 to 11577
 Data columns (total 40 columns):
