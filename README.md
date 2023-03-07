@@ -1,6 +1,7 @@
 # Customer-Segmentation-using-K-Means-Algorithm
 This project is about customer segmentation using K-Means Algorithm. Segmentation was done based on customer transactions data such as total payments, order frequency and order recency. Customers are segmented as loyal customers, active customers and at risk customers.
 
+### Import Packages
 ```python
 # Import Packages
 import pandas as pd
@@ -91,3 +92,5 @@ pd.DataFrame(list(zip(df_names, num_na)), columns = ['Dataset', 'Total Missing V
 | df_prod_names     |                      0|
 | df_prod           |                   2448|
 | df_sellers        |                      0|
+
+Based on the table above, could be known that there are missing values on 'df_order_reviews', 'df_orders', and 'df_prod' datasets. To avoid the missing values effects on the analysis, each rows that contain missing value(s) will be removed from the datasets.
