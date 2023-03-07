@@ -441,16 +441,23 @@ Customers from this cluster recently make purchases.
 Scaling customer's data using Min-Max Scaling method
 
 Total Payment
+
 Total Payment_scaled = (Total Payment - 13.89)/(29099.52 - 13.89)
+
 Order Frequency
+
 Order Frequency_scaled = (Order Frequency - 1)/(13 - 1)
+
 Order Recency
+
 Order Recency_scaled = (Order Recency - 2)/(484 - 2)
 
 Calculate distance measure for clustering
 
 distance = sqrt((Total Payment_scaled - Total Payment_centroid cluster i)^2 + (Order Frequency_scaled - Order Frequency_centroid cluster i)^2 + (Order Recency_scaled - Order Recency_centroid cluster i)^2)
+
 for i : cluster 1, cluster 2, cluster 3
 
 The above formula is applied to each clusters.
+
 Then get distance of new customer to each clusters and find the smallest ones. The smallest distance is the cluster for the new customer.
