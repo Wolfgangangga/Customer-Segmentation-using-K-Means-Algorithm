@@ -3,7 +3,6 @@ This project is about customer segmentation using K-Means Algorithm. Segmentatio
 
 ### Import Packages
 '''python
-# Import Packages
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
